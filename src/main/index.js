@@ -1,15 +1,20 @@
-import { app, shell, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron'
+import { app, shell, BrowserWindow, Tray, Menu, nativeImage, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-const { clipboard } = require('electron')
-const { ipcRenderer } = require('electron') // 데이터 읽어서 전달해주기
+import { init } from '../db/Config'
+import './function/SiteInfoApi'
+import './function/clip/Clip'
+init()
 
 function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    x: 0,
+    y: 0,
+    width: 400,
+    height: height,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -18,7 +23,6 @@ function createWindow() {
       sandbox: false
     }
   })
-
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
@@ -37,10 +41,6 @@ function createWindow() {
   }
 }
 
-ipcMain.on('key-pressed', (event, key) => {
-  console.log(`Renderer Process에서 받은 키: ${key}`)
-})
-
 function createTray() {
   // 트레이 아이콘 이미지 설정
   const trayIcon = nativeImage.createFromPath('../../resources/icon.png')
@@ -53,7 +53,7 @@ function createTray() {
     {
       label: 'Open',
       click: () => {
-        window.show() // 창을 표시
+        app.show() // 창을 표시
       }
     },
     {
@@ -67,22 +67,32 @@ function createTray() {
   // 트레이 아이콘에 메뉴 연결
   tray.setContextMenu(contextMenu)
 
-  // 트레이 아이콘을 클릭하면 창을 토글 (보이거나 숨기기)
-  tray.on('click', () => {
-    if (window.isVisible()) {
-      window.hide()
-    } else {
-      window.show()
-    }
-  })
-}
-function get() {
-  console.log(clipboard.readText())
+  // 트레이 아이콘을 클릭이벤트
+  tray.on('click', () => {})
 }
 
-// setInterval(() => {
-//
-// }, 1000)
+// clipboard.startWatching()
+
+// 최초 시작 시 현재 클립보드 내용 읽기
+// const initialText = clipboard.readText()
+
+// if (initialText) {
+//   console.log('Initial clipboard:', initialText)
+// }
+
+// clipboard.on('text-changed', () => {
+//   let currentText = clipboard.readText()
+//   if (currentText.includes('http')) {
+//     const url = new URL(currentText)
+//     console.log(url.hostname)
+//     console.log(url.host) // TODO 호스트 기준으로 데이터 분할
+//     console.log(url.pathname)
+//     console.log(url.searchParams)
+//     console.log(url.search)
+//   }
+
+// console.log(currentText)
+// })
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -97,9 +107,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
   createTray()
