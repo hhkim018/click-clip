@@ -38,10 +38,7 @@ const NodeItem = ({ node, style, setMenu, dragHandle }) => {
           onClick={() => (isParent ? node.toggle() : handleClick(node))}
         >
           {isParent && (
-            <span
-              className={`node-chevron ${!isOpen ? 'collapsed' : ''}`}
-              onClick={handleToggle}
-            >
+            <span className={`node-chevron ${!isOpen ? 'collapsed' : ''}`} onClick={handleToggle}>
               <ChevronDownIcon size={14} />
             </span>
           )}

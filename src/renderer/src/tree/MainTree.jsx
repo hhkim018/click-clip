@@ -23,34 +23,27 @@ const MainTree = () => {
     const listener = () => {
       const fetchData = async () => {
         const siteInfos = await window.electron.ipcRenderer.invoke('get-site-info')
-        const copySiteInfos = structuredClone(siteInfos)
 
-        const siteTree = copySiteInfos
+        function buildChildren(parentId) {
+          return siteInfos
+            .filter((site) => String(site.parent_id) === String(parentId))
+            .map((site) => ({
+              id: String(site.id),
+              name: site.name,
+              url: site.url || undefined,
+              parentId: site.parent_id,
+              children: buildChildren(site.id)
+            }))
+        }
+
+        const siteTree = siteInfos
           .filter((site) => !site.parent_id)
-          .map((site) => {
-            return { id: String(site.id), name: site.name, children: [] }
-          })
-
-        copySiteInfos.forEach((site) => {
-          const parent = copySiteInfos.filter((val) => String(val.id) === String(site.parent_id))
-
-          if (parent.length === 0) return // 최상위 디렉토리
-
-          if (!parent[0].children) {
-            parent[0].children = []
-          }
-
-          parent[0].children.push({
+          .map((site) => ({
             id: String(site.id),
             name: site.name,
-            url: site.url,
-            children: []
-          })
-        })
-
-        siteTree.forEach((val) => {
-          val.children = copySiteInfos.filter((copy) => val.id === String(copy.id))[0].children // TODO 2단계 디렉토리는 저굥ㅇ안되는문제발생
-        })
+            parentId: site.parent_id,
+            children: buildChildren(site.id)
+          }))
 
         setData(siteTree)
       }
@@ -267,6 +260,12 @@ const MainTree = () => {
           data={data}
           onRename={onRename}
           onMove={onMove}
+          disableDrop={({ parentNode, dragNodes }) => {
+            const isDraggingChild = dragNodes.some((n) => !!n.data.parentId)
+            if (isDraggingChild && parentNode === null) return true // child를 root로 이동 차단
+            if (parentNode !== null && !!parentNode.data.url) return true // URL 노드 안으로 드롭 차단
+            return false
+          }}
           rowHeight={36}
           indent={24}
           width={treeWidth}
