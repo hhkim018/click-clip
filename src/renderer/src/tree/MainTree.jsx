@@ -24,6 +24,15 @@ const MainTree = () => {
       const fetchData = async () => {
         const siteInfos = await window.electron.ipcRenderer.invoke('get-site-info')
 
+        const siteTree = siteInfos
+          .filter((site) => !site.parent_id)
+          .map((site) => ({
+            id: String(site.id),
+            name: site.name,
+            parentId: site.parent_id,
+            children: buildChildren(site.id)
+          }))
+
         function buildChildren(parentId) {
           return siteInfos
             .filter((site) => String(site.parent_id) === String(parentId))
@@ -35,15 +44,6 @@ const MainTree = () => {
               children: buildChildren(site.id)
             }))
         }
-
-        const siteTree = siteInfos
-          .filter((site) => !site.parent_id)
-          .map((site) => ({
-            id: String(site.id),
-            name: site.name,
-            parentId: site.parent_id,
-            children: buildChildren(site.id)
-          }))
 
         setData(siteTree)
       }
