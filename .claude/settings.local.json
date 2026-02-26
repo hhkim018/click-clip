@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(file /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png && sips -g pixelWidth -g pixelHeight /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png)",
+      "Bash(sips -c 1024 1024 resources/app_icon.png --out build/icon.png)",
+      "Bash(which npx && npx --yes png-to-ico build/icon.png > build/icon.ico 2>&1)",
+      "Bash(ls -la /Users/gimhyeonho/Documents/click-clip/build/icon.icns && sips -g pixelWidth -g pixelHeight /Users/gimhyeonho/Documents/click-clip/build/icon.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png)",
+      "Bash(sips -c 1024 1024 /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png --out /tmp/icon_square.png && sips --cropToHeightWidth 820 820 --cropOffset 100 100 /tmp/icon_square.png --out /tmp/icon_cropped.png && sips -z 1024 1024 /tmp/icon_cropped.png --out /Users/gimhyeonho/Documents/click-clip/build/icon.png)"
+    ]
+  }
+}

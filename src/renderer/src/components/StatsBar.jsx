@@ -1,6 +1,6 @@
 import React from 'react'
 
-const StatsBar = ({ domainCount, urlCount, isListening }) => {
+const StatsBar = ({ domainCount, urlCount }) => {
   return (
     <div className="stats-bar">
       <div className="stats-info">

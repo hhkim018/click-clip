@@ -1,8 +1,9 @@
-import { app, shell, BrowserWindow, Tray, Menu, nativeImage, screen } from 'electron'
+import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/app_icon.png?asset'
 import { init } from '../db/Config'
+import { createTray } from './function/tray/CreateTray'
 import './function/SiteInfoApi'
 import './function/clip/Clip'
 init()
@@ -17,7 +18,7 @@ function createWindow() {
     height: height,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -39,36 +40,6 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-}
-
-function createTray() {
-  // 트레이 아이콘 이미지 설정
-  const trayIcon = nativeImage.createFromPath('../../resources/icon.png')
-
-  // Tray 객체 생성
-  const tray = new Tray(icon)
-
-  // 트레이 아이콘에 마우스 오른쪽 클릭 시 나타날 메뉴 생성
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Open',
-      click: () => {
-        app.show() // 창을 표시
-      }
-    },
-    {
-      label: 'Quit',
-      click: () => {
-        app.quit() // 앱 종료
-      }
-    }
-  ])
-
-  // 트레이 아이콘에 메뉴 연결
-  tray.setContextMenu(contextMenu)
-
-  // 트레이 아이콘을 클릭이벤트
-  tray.on('click', () => {})
 }
 
 // clipboard.startWatching()

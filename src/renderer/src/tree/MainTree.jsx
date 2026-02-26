@@ -261,7 +261,6 @@ const MainTree = () => {
       }}
     >
       <Header onAdd={() => setShowAddModal(true)} onClearAll={() => setShowClearConfirm(true)} />
-      {/* TODO isListening 으로 기능 on/off 기능  */}
       <StatsBar domainCount={domainCount} urlCount={urlCount} />
       <div className="tree-container" ref={treeContainerRef}>
         <Tree
