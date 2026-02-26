@@ -6,7 +6,10 @@
       "Bash(which npx && npx --yes png-to-ico build/icon.png > build/icon.ico 2>&1)",
       "Bash(ls -la /Users/gimhyeonho/Documents/click-clip/build/icon.icns && sips -g pixelWidth -g pixelHeight /Users/gimhyeonho/Documents/click-clip/build/icon.png)",
       "Bash(sips -g pixelWidth -g pixelHeight /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png)",
-      "Bash(sips -c 1024 1024 /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png --out /tmp/icon_square.png && sips --cropToHeightWidth 820 820 --cropOffset 100 100 /tmp/icon_square.png --out /tmp/icon_cropped.png && sips -z 1024 1024 /tmp/icon_cropped.png --out /Users/gimhyeonho/Documents/click-clip/build/icon.png)"
+      "Bash(sips -c 1024 1024 /Users/gimhyeonho/Documents/click-clip/resources/app_icon.png --out /tmp/icon_square.png && sips --cropToHeightWidth 820 820 --cropOffset 100 100 /tmp/icon_square.png --out /tmp/icon_cropped.png && sips -z 1024 1024 /tmp/icon_cropped.png --out /Users/gimhyeonho/Documents/click-clip/build/icon.png)",
+      "Bash(for pkg in \"vite\" \"electron-vite\" \"electron-builder\" \"eslint\" \"prettier\" \"@electron-toolkit/preload\" \"@electron-toolkit/utils\"; do echo \"=== $pkg ===\"; cat /Users/gimhyeonho/Documents/click-clip/node_modules/$pkg/package.json 2>/dev/null | grep -E '\"license\"|\"name\"|\"version\"' | head -3; done)",
+      "Bash(for pkg in \"react-dom\" \"@vitejs/plugin-react\" \"nodemon\" \"clipboard-event\" \"eslint-plugin-react\" \"eslint-plugin-react-hooks\" \"eslint-plugin-react-refresh\" \"@electron-toolkit/eslint-config\" \"@electron-toolkit/eslint-config-prettier\"; do echo \"=== $pkg ===\"; cat /Users/gimhyeonho/Documents/click-clip/node_modules/$pkg/package.json 2>/dev/null | grep -E '\"license\"|\"name\"|\"version\"' | head -3; done)",
+      "Bash(find /Users/gimhyeonho/Documents/click-clip -maxdepth 2 \\\\\\( -name \"LICENSE*\" -o -name \"NOTICE*\" -o -name \"ATTRIBUTION*\" \\\\\\) 2>/dev/null | grep -v node_modules)"
     ]
   }
 }
