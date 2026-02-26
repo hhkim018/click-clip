@@ -4,12 +4,14 @@ import NodeItem from './NodeItem'
 import Header from '../components/Header'
 import StatsBar from '../components/StatsBar'
 import Modal from '../components/Modal'
+import ConfirmModal from '../components/ConfirmModal'
 import useContainerSize from '../hooks/useContainerSize'
 
 const MainTree = () => {
   const [data, setData] = useState([])
-  const [isListening, setIsListening] = useState(true)
+  // const [isListening, setIsListening] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showClearConfirm, setShowClearConfirm] = useState(false)
   const [treeContainerRef, { width: treeWidth, height: treeHeight }] = useContainerSize()
 
   const [menu, setMenu] = useState(null)
@@ -244,6 +246,12 @@ const MainTree = () => {
     setShowAddModal(false)
   }
 
+  async function handleClearAll() {
+    await window.electron.ipcRenderer.invoke('delete-all-site-infos')
+    setData([])
+    setShowClearConfirm(false)
+  }
+
   return (
     <div
       style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}
@@ -252,9 +260,9 @@ const MainTree = () => {
         setDetail(null)
       }}
     >
-      <Header onAdd={() => setShowAddModal(true)} />
+      <Header onAdd={() => setShowAddModal(true)} onClearAll={() => setShowClearConfirm(true)} />
       {/* TODO isListening 으로 기능 on/off 기능  */}
-      <StatsBar domainCount={domainCount} urlCount={urlCount} isListening={isListening} />
+      <StatsBar domainCount={domainCount} urlCount={urlCount} />
       <div className="tree-container" ref={treeContainerRef}>
         <Tree
           data={data}
@@ -331,6 +339,14 @@ const MainTree = () => {
           placeholder="디렉토리 이름을 입력하세요"
           onSubmit={handleAddDirectory}
           onClose={() => setShowAddModal(false)}
+        />
+      )}
+      {showClearConfirm && (
+        <ConfirmModal
+          title="전체 삭제"
+          message="저장된 모든 데이터가 삭제됩니다. 정말 삭제하시겠습니까?"
+          onConfirm={handleClearAll}
+          onClose={() => setShowClearConfirm(false)}
         />
       )}
     </div>

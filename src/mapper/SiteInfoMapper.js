@@ -42,3 +42,8 @@ export const deleteSiteInfosByIds = (ids) => {
   const query = db.prepare(`DELETE FROM SITE_INFO WHERE id IN (${placeholders})`)
   return query.run(...ids).changes
 }
+
+export const deleteAllSiteInfos = () => {
+  const query = db.prepare('DELETE FROM SITE_INFO')
+  return query.run().changes
+}

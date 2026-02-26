@@ -8,10 +8,10 @@ const StatsBar = ({ domainCount, urlCount, isListening }) => {
         <span className="stats-separator">|</span>
         <span>{urlCount} URLs</span>
       </div>
-      <div className="stats-status">
+      {/* <div className="stats-status">
         <span className={`status-dot ${isListening ? '' : 'inactive'}`} />
         <span>{isListening ? 'Listening' : 'Paused'}</span>
-      </div>
+      </div> */}
     </div>
   )
 }

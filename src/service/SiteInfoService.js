@@ -1,4 +1,4 @@
-import { insertSiteInfo, selectSiteInfos, existHost, existUrl, selectMinIdByHost, updateSiteInfoName, updateParentIdByIds, deleteSiteInfosByIds } from '../mapper/SiteInfoMapper'
+import { insertSiteInfo, selectSiteInfos, existHost, existUrl, selectMinIdByHost, updateSiteInfoName, updateParentIdByIds, deleteSiteInfosByIds, deleteAllSiteInfos } from '../mapper/SiteInfoMapper'
 
 export const saveSiteInfo = (parentId = null, name, url, host) => {
   return insertSiteInfo(parentId, name, url, host)
@@ -30,4 +30,8 @@ export const modifyParentIdByIds = (ids, parentId) => {
 
 export const removeSiteInfosByIds = (ids) => {
   return deleteSiteInfosByIds(ids)
+}
+
+export const removeAllSiteInfos = () => {
+  return deleteAllSiteInfos()
 }

@@ -1,5 +1,5 @@
 import { shell, ipcMain } from 'electron'
-import { saveSiteInfo, getSiteInfos, modifySiteInfoName, modifyParentIdByIds, removeSiteInfosByIds } from '../../service/SiteInfoService'
+import { saveSiteInfo, getSiteInfos, modifySiteInfoName, modifyParentIdByIds, removeSiteInfosByIds, removeAllSiteInfos } from '../../service/SiteInfoService'
 
 // handle/invoke는 값을 반환할 수 있고, on/send는 단방향 전송만
 
@@ -25,6 +25,10 @@ ipcMain.handle('update-parent-id', (_, { ids, parentId }) => {
 
 ipcMain.handle('delete-site-infos', (_, { ids }) => {
   return removeSiteInfosByIds(ids)
+})
+
+ipcMain.handle('delete-all-site-infos', () => {
+  return removeAllSiteInfos()
 })
 
 ipcMain.handle('insert-test-data', () => {
