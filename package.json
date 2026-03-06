@@ -21,6 +21,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.6.2",
+    "cheerio": "^1.2.0",
     "electron-clipboard-extended": "^1.1.1",
     "react-arborist": "^3.4.3"
   },
